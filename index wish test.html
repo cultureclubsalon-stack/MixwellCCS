@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Culture Club Color Bar · Scale test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7ebe5;--surface:#fffaf6;--ink:#1e2a24;--muted:#6a6660;--line:#e6d1c6;
+  --green:#354c41;--on-green:#fbf1ea;--terra:#9c5d46;--terra-fill:#bf816a;--sand:#e9cbbb;--pink:#fce4e5;
+  --warn:#9a3b2a;--ok:#2f6b4f;
+  --display:"Palo Santo","Fraunces",Georgia,"Times New Roman",serif;
+  --body:Helvetica,"Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;box-sizing:border-box;
+}
+*,*::before,*::after{box-sizing:inherit}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.45 var(--body);-webkit-text-size-adjust:100%}
+header{background:var(--green);color:var(--on-green);padding:18px 22px}
+h1{font:600 clamp(1.5rem,3.4vw,2rem)/1.1 var(--display);margin:0}
+h1 small{display:block;font:400 .9rem/1.3 var(--body);opacity:.85;margin-top:4px}
+main{max-width:720px;margin:0 auto;padding:18px 14px 60px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px;margin-bottom:16px}
+h2{font:600 1.3rem/1.2 var(--display);margin:0 0 10px}
+.btn{font:600 17px var(--body);border-radius:12px;border:1px solid var(--line);background:var(--surface);color:var(--ink);padding:12px 18px;min-height:52px;cursor:pointer}
+.btn.primary{background:var(--green);color:var(--on-green);border-color:var(--green)}
+.btn.terra{background:var(--terra-fill);color:#fff;border-color:var(--terra-fill)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.row .btn{flex:1 1 160px}
+ol{margin:0;padding-left:20px}ol li{margin:4px 0}
+.check{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px dashed var(--line)}
+.check:first-of-type{border-top:0}
+.dot{flex:0 0 22px;height:22px;border-radius:50%;background:var(--line);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;margin-top:1px}
+.dot.ok{background:var(--ok)}.dot.bad{background:var(--warn)}.dot.wait{background:var(--terra-fill)}
+.check b{display:block}.check span{color:var(--muted);font-size:.92rem}
+.disc{width:230px;height:230px;border-radius:50%;margin:6px auto 14px;background:radial-gradient(circle at 50% 42%,var(--surface) 0 52%,var(--sand) 53% 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid var(--line)}
+.disc b{font:600 3.4rem/1 var(--display);font-variant-numeric:tabular-nums}
+.disc span{color:var(--muted);font-size:.95rem;margin-top:4px}
+.steady{display:inline-block;font-size:.8rem;font-weight:700;padding:3px 10px;border-radius:999px;margin-top:8px;background:var(--line);color:var(--muted)}
+.steady.on{background:var(--green);color:var(--on-green)}
+.big{text-align:center}
+.muted{color:var(--muted)}
+.note{background:var(--pink);border-radius:12px;padding:12px 14px;margin:0 0 14px}
+.note.bad{border:1px solid var(--warn)}
+#log{font:13px/1.4 ui-monospace,Menlo,Consolas,monospace;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:10px;max-height:260px;overflow:auto;white-space:pre-wrap;word-break:break-all}
+textarea{width:100%;min-height:160px;font:13px/1.4 ui-monospace,Menlo,Consolas,monospace;border:1px solid var(--line);border-radius:10px;padding:10px;background:var(--bg);color:var(--ink)}
+details summary{cursor:pointer;font-weight:600;padding:6px 0}
+#toast{position:fixed;left:50%;top:16px;z-index:20;max-width:90vw;text-align:center;transform:translateX(-50%);background:var(--green);color:var(--on-green);padding:12px 18px;border-radius:12px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s}
+#toast.show{opacity:1}
+</style>
+</head>
+<body>
+<header><h1>Culture Club Color Bar<small>Scale test</small></h1></header>
+<main>
+
+<div class="panel">
+  <h2>Before you start</h2>
+  <ol>
+    <li>Use the color bar iPad, with this page open in the <b>Bluefy</b> app.</li>
+    <li>Close the Vish app all the way (swipe it up and away). The scale only talks to one app at a time.</li>
+    <li>Turn the scale on. Leave it unplugged from the charger.</li>
+    <li>Tap <b>Connect to scale</b> and pick the scale from the list.</li>
+  </ol>
+</div>
+
+<div class="panel">
+  <h2>Checks</h2>
+  <div class="check"><span class="dot wait" id="c1d">1</span><div><b>This browser can use Bluetooth</b><span id="c1">Checking…</span></div></div>
+  <div class="check"><span class="dot" id="c2d">2</span><div><b>Scale found and connected</b><span id="c2">Tap Connect to scale.</span></div></div>
+  <div class="check"><span class="dot" id="c3d">3</span><div><b>Scale accepted the app</b><span id="c3">Waiting for the connection.</span></div></div>
+  <div class="check"><span class="dot" id="c4d">4</span><div><b>Weight is coming through</b><span id="c4">Waiting for the scale.</span></div></div>
+  <div class="check"><span class="dot" id="c5d">5</span><div><b>Tare from the app works</b><span id="c5">Put something on the scale, then tap Tare.</span></div></div>
+</div>
+
+<div class="panel big">
+  <div id="msg" class="note" hidden></div>
+  <div class="disc"><b id="w">—</b><span>grams</span></div>
+  <span class="steady" id="steady">Not connected</span>
+  <div class="row" style="margin-top:16px">
+    <button class="btn primary" id="bConnect">Connect to scale</button>
+    <button class="btn terra" id="bTare" disabled>Tare</button>
+  </div>
+  <div class="row" style="margin-top:10px">
+    <button class="btn" id="bDisconnect" hidden>Disconnect</button>
+  </div>
+</div>
+
+<div class="panel">
+  <h2>Send the results</h2>
+  <p class="muted" style="margin-top:-4px">When you're done (or if something doesn't work), tap Copy test results and paste them into the chat.</p>
+  <div class="row"><button class="btn primary" id="bCopy">Copy test results</button></div>
+  <textarea id="copyBox" readonly hidden></textarea>
+  <details style="margin-top:12px"><summary>What the scale is sending</summary><div id="log"></div></details>
+</div>
+
+</main>
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+/* PROTOCOL START: how Acaia scales talk. Every message starts with EF DD, then a message type, the data, and two check bytes. */
+const ACAIA = {
+  // Newer scales (Pearl 2021, Pearl S, Lunar 2021, Pyxis)
+  NEW_SVC: '49535343-fe7d-4ae5-8fa9-9fafd205e455',
+  NEW_WRITE: '49535343-8841-43f4-a8d4-ecbe34729bb3',
+  NEW_NOTIFY: '49535343-1e4d-4bd9-ba61-23c647249616',
+  // Older scales (original Pearl and Lunar): one characteristic does both
+  OLD_SVC: '00001820-0000-1000-8000-00805f9b34fb',
+  OLD_CHAR: '00002a80-0000-1000-8000-00805f9b34fb'
+};
+function encode(type, payload) {
+  const out = new Uint8Array(payload.length + 5);
+  out[0] = 0xEF; out[1] = 0xDD; out[2] = type;
+  let a = 0, b = 0;
+  payload.forEach((v, i) => { out[3 + i] = v & 0xFF; if (i % 2 === 0) a += v; else b += v; });
+  out[out.length - 2] = a & 0xFF; out[out.length - 1] = b & 0xFF;
+  return out;
+}
+const CMD = {
+  ident: () => encode(11, [...'012345678901234'].map(c => c.charCodeAt(0))),
+  notify: () => { const p = [0, 1, 1, 2, 2, 5, 3, 4]; return encode(12, [p.length + 1, ...p]); },
+  heartbeat: () => encode(0, [2, 0]),
+  tare: () => encode(4, [0])
+};
+/* Weight data: 3 bytes of number, a byte saying how many decimal places, and a sign flag. */
+function decodeWeight(p) {
+  if (!p || p.length < 6) return null;
+  let v = ((p[2] & 0xFF) << 16) + ((p[1] & 0xFF) << 8) + (p[0] & 0xFF);
+  const places = p[4] & 0xFF;
+  if (places > 0 && places < 5) v = v / Math.pow(10, places);
+  if ((p[5] & 0x02) === 0x02) v = -v;
+  return v;
+}
+/* Pulls whole messages out of whatever has arrived so far. Returns {msgs, rest}. */
+function parse(bytes) {
+  const msgs = [];
+  let buf = bytes;
+  for (;;) {
+    let s = -1;
+    for (let i = 0; i < buf.length - 1; i++) if (buf[i] === 0xEF && buf[i + 1] === 0xDD) { s = i; break; }
+    if (s < 0) return { msgs, rest: buf.length && buf[buf.length - 1] === 0xEF ? buf.slice(-1) : [] };
+    if (buf.length - s < 5) return { msgs, rest: buf.slice(s) };
+    const cmd = buf[s + 2];
+    let end;
+    if (cmd === 12) {
+      end = s + buf[s + 3] + 5;
+      if (end > buf.length) return { msgs, rest: buf.slice(s) };
+      const type = buf[s + 4], p = buf.slice(s + 5, end);
+      const m = { cmd, type, raw: buf.slice(s, end) };
+      if (type === 5) m.weight = decodeWeight(p);
+      else if (type === 11 && p[2] === 5) m.weight = decodeWeight(p.slice(3));
+      else if (type === 8) m.button = true;
+      msgs.push(m);
+    } else {
+      // Other messages (scale info, settings): length byte at s+3, same layout. Keep them for the log.
+      const len = buf[s + 3];
+      end = Math.min(buf.length, s + len + 5);
+      if (s + len + 5 > buf.length && buf.length - s < 40) return { msgs, rest: buf.slice(s) };
+      msgs.push({ cmd, raw: buf.slice(s, end) });
+    }
+    buf = buf.slice(end);
+  }
+}
+const hex = a => Array.from(a).map(x => x.toString(16).padStart(2, '0')).join(' ').toUpperCase();
+/* PROTOCOL END */
+
+const $ = s => document.querySelector(s);
+const T = { start: new Date(), device: '', services: [], kind: '', packets: [], weights: 0, last: null, tareOk: null, errors: [], notes: [] };
+let dev = null, server = null, wChar = null, nChar = null, buf = [], hb = null, retry = null, queue = Promise.resolve();
+const recent = [];
+
+function toast(m) { const t = $('#toast'); t.textContent = m; t.classList.add('show'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('show'), 2600); }
+function log(line) { const el = $('#log'); const ts = new Date().toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', second: '2-digit' });
+  el.textContent += ts + '  ' + line + '\n'; if (el.textContent.length > 20000) el.textContent = el.textContent.slice(-15000); el.scrollTop = el.scrollHeight; }
+function setCheck(n, state, text) { const d = $('#c' + n + 'd'); d.className = 'dot ' + (state || ''); d.textContent = state === 'ok' ? '✓' : state === 'bad' ? '!' : n; $('#c' + n).textContent = text; }
+function msg(text, bad) { const m = $('#msg'); if (!text) { m.hidden = true; return; } m.textContent = text; m.className = 'note' + (bad ? ' bad' : ''); m.hidden = false; }
+function err(where, e) { const t = (e && (e.name ? e.name + ': ' : '') + (e.message || e)) || String(e); T.errors.push(where + ' — ' + t); log('Problem (' + where + '): ' + t); return t; }
+
+/* 1. Is Bluetooth here at all? */
+(async function () {
+  if (!navigator.bluetooth) {
+    setCheck(1, 'bad', 'No Bluetooth on this page. On the iPad, open this link in the Bluefy app (not Safari or Chrome).');
+    T.notes.push('navigator.bluetooth missing'); $('#bConnect').disabled = true; return;
+  }
+  let avail = true;
+  try { if (navigator.bluetooth.getAvailability) avail = await navigator.bluetooth.getAvailability(); } catch (e) { err('availability', e); }
+  if (avail === false) { setCheck(1, 'bad', 'Bluetooth looks turned off or blocked here. Turn Bluetooth on in the iPad Settings, and allow Bluetooth for Bluefy.'); T.notes.push('getAvailability false'); }
+  else setCheck(1, 'ok', 'Yes.');
+})();
+
+function write(bytes, label) {
+  queue = queue.then(async () => {
+    if (!wChar) return;
+    try {
+      if (wChar.properties && wChar.properties.writeWithoutResponse && wChar.writeValueWithoutResponse) await wChar.writeValueWithoutResponse(bytes);
+      else await wChar.writeValue(bytes);
+      if (label) log('Sent ' + label + ': ' + hex(bytes));
+    } catch (e) { err('sending ' + (label || 'command'), e); }
+  });
+  return queue;
+}
+
+function onData(ev) {
+  const v = ev.target.value, a = [];
+  for (let i = 0; i < v.byteLength; i++) a.push(v.getUint8(i));
+  if (T.packets.length < 40) T.packets.push(hex(a));
+  const r = parse(buf.concat(a)); buf = r.rest;
+  for (const m of r.msgs) {
+    if (m.weight != null && isFinite(m.weight)) gotWeight(m.weight);
+    else if (m.button) log('Scale button pressed: ' + hex(m.raw));
+    else if (T.packets.length < 40 || !gotWeight.n) log('Message ' + m.cmd + (m.type != null ? '/' + m.type : '') + ': ' + hex(m.raw));
+  }
+}
+
+function gotWeight(g) {
+  gotWeight.n = (gotWeight.n || 0) + 1; T.weights++; T.last = g;
+  if (T.weights === 1) { setCheck(3, 'ok', 'Yes.'); setCheck(4, 'ok', 'Yes. Put a bowl on the scale and watch the number change.'); msg(''); clearInterval(retry); log('First weight: ' + g + ' g'); }
+  $('#w').textContent = (Math.round(g * 10) / 10).toFixed(1);
+  const now = Date.now(); recent.push({ g, t: now }); while (recent.length && now - recent[0].t > 900) recent.shift();
+  const steady = recent.length >= 3 && Math.max(...recent.map(x => x.g)) - Math.min(...recent.map(x => x.g)) <= 0.1;
+  const s = $('#steady'); s.textContent = steady ? 'Steady' : 'Settling…'; s.className = 'steady' + (steady ? ' on' : '');
+  if (tareWait && Math.abs(g) <= 0.2) { tareWait = false; T.tareOk = true; setCheck(5, 'ok', 'Yes. The scale went back to zero.'); }
+}
+
+async function connect() {
+  msg(''); $('#bConnect').disabled = true;
+  try {
+    const opts = { acceptAllDevices: true, optionalServices: [ACAIA.NEW_SVC, ACAIA.OLD_SVC, 'battery_service', 'device_information'] };
+    setCheck(2, 'wait', 'Pick the scale in the list that pops up…');
+    try { dev = await navigator.bluetooth.requestDevice(opts); }
+    catch (e) {
+      if (e && e.name === 'TypeError') { // some browsers want a name filter instead of "all devices"
+        dev = await navigator.bluetooth.requestDevice({ filters: ['PEARL', 'ACAIA', 'PROCH', 'LUNAR', 'PYXIS', 'VISH', 'CINCO'].map(n => ({ namePrefix: n })), optionalServices: opts.optionalServices });
+      } else throw e;
+    }
+    T.device = dev.name || '(no name)'; log('Picked: ' + T.device);
+    dev.addEventListener('gattserverdisconnected', onDisconnected);
+    await link();
+  } catch (e) {
+    const t = err('connect', e);
+    if (/SecurityError|not allowed|permissions policy|disallowed/i.test(t)) { setCheck(2, 'bad', 'Blocked by the page wrapper.'); msg('Bluetooth is blocked inside this page. Send me the test results. We\'ll put the screens on their own web address, which fixes this.', true); }
+    else if (/NotFoundError|cancel/i.test(t)) setCheck(2, '', 'No scale picked. Tap Connect to scale and pick it from the list. Not in the list? Turn the scale off and on, and make sure Vish is closed.');
+    else { setCheck(2, 'bad', 'Could not connect: ' + t); msg('Something went wrong. Tap Copy test results and paste them into the chat.', true); }
+    $('#bConnect').disabled = false;
+  }
+}
+
+async function link() {
+  setCheck(2, 'wait', 'Connecting to ' + T.device + '…');
+  server = await dev.gatt.connect();
+  setCheck(2, 'ok', 'Connected to ' + T.device + '.');
+  try { T.services = (await server.getPrimaryServices()).map(s => s.uuid); log('Services: ' + T.services.join(', ')); } catch (e) { err('listing services', e); }
+  wChar = nChar = null;
+  try {
+    const s = await server.getPrimaryService(ACAIA.NEW_SVC);
+    wChar = await s.getCharacteristic(ACAIA.NEW_WRITE); nChar = await s.getCharacteristic(ACAIA.NEW_NOTIFY); T.kind = 'newer Acaia layout';
+  } catch (e) {
+    log('Newer layout not found, trying the older one.');
+    try { const s = await server.getPrimaryService(ACAIA.OLD_SVC); wChar = nChar = await s.getCharacteristic(ACAIA.OLD_CHAR); T.kind = 'older Acaia layout'; }
+    catch (e2) { T.kind = 'unknown'; err('finding the weight channel', e2); }
+  }
+  if (!nChar) { setCheck(3, 'bad', 'The scale connected but isn\'t using the usual Acaia channels.'); msg('Tap Copy test results and paste them into the chat. That tells me what this scale uses.', true); afterLink(); return; }
+  log('Using the ' + T.kind + '.');
+  nChar.addEventListener('characteristicvaluechanged', onData);
+  await nChar.startNotifications();
+  setCheck(3, 'wait', 'Saying hello to the scale…');
+  buf = []; gotWeight.n = 0;
+  await hello();
+  clearInterval(hb); hb = setInterval(() => write(CMD.heartbeat()), 3000);
+  let tries = 0; clearInterval(retry);
+  retry = setInterval(() => {
+    if (T.weights) { clearInterval(retry); return; }
+    if (++tries > 4) { clearInterval(retry); setCheck(3, 'bad', 'The scale connected but isn\'t sending weight to this page.'); setCheck(4, 'bad', 'No weight yet.');
+      msg('This may be the Vish software on the scale. Tap Copy test results and paste them into the chat so I can see what it\'s sending.', true); return; }
+    log('No weight yet, asking again (' + tries + ')'); hello();
+  }, 4000);
+  afterLink();
+}
+async function hello() { await write(CMD.ident(), 'hello'); await write(CMD.notify(), 'weight request'); await write(CMD.heartbeat(), 'keep-alive'); }
+function afterLink() { $('#bConnect').hidden = true; $('#bDisconnect').hidden = false; $('#bTare').disabled = !wChar; $('#steady').textContent = 'Connected'; $('#bConnect').disabled = false; }
+
+function onDisconnected() {
+  clearInterval(hb); clearInterval(retry); log('Scale disconnected.');
+  $('#steady').textContent = 'Disconnected'; $('#steady').className = 'steady'; $('#bTare').disabled = true;
+  $('#bConnect').hidden = false; $('#bConnect').textContent = 'Reconnect'; $('#bDisconnect').hidden = true;
+  if (!manualOff) toast('The scale disconnected. Tap Reconnect.');
+  manualOff = false;
+}
+let manualOff = false, tareWait = false;
+$('#bConnect').onclick = () => { if (dev && $('#bConnect').textContent === 'Reconnect') { $('#bConnect').disabled = true; link().catch(e => { setCheck(2, 'bad', 'Could not reconnect: ' + err('reconnect', e)); $('#bConnect').disabled = false; }); } else connect(); };
+$('#bDisconnect').onclick = () => { manualOff = true; try { dev.gatt.disconnect(); } catch (e) {} };
+$('#bTare').onclick = async () => {
+  const before = T.last;
+  tareWait = true; await write(CMD.tare(), 'tare');
+  if (before != null && Math.abs(before) <= 0.2) setCheck(5, 'wait', 'Sent. Put something on the scale first so we can see it go back to zero.');
+  setTimeout(() => { if (tareWait) { tareWait = false; if (T.tareOk == null) { T.tareOk = false; setCheck(5, 'bad', 'The scale didn\'t go back to zero. Its own tare button still works.'); } } }, 3000);
+};
+
+function report() {
+  const L = [];
+  L.push('Culture Club scale test, ' + T.start.toLocaleString());
+  L.push('Browser: ' + navigator.userAgent);
+  L.push('Page in a frame: ' + (window.top !== window.self ? 'yes' : 'no'));
+  L.push('Bluetooth on page: ' + (navigator.bluetooth ? 'yes' : 'no'));
+  L.push('Scale name: ' + (T.device || 'not connected'));
+  L.push('Layout: ' + (T.kind || '—'));
+  L.push('Services: ' + (T.services.join(', ') || '—'));
+  L.push('Weight readings received: ' + T.weights + (T.last != null ? ' (last ' + T.last + ' g)' : ''));
+  L.push('Tare from app: ' + (T.tareOk == null ? 'not tried' : T.tareOk ? 'worked' : 'did not work'));
+  if (T.notes.length) L.push('Notes: ' + T.notes.join('; '));
+  if (T.errors.length) { L.push('Problems:'); T.errors.slice(-10).forEach(e => L.push('  ' + e)); }
+  if (T.packets.length) { L.push('First data from the scale:'); T.packets.slice(0, 25).forEach(p => L.push('  ' + p)); }
+  return L.join('\n');
+}
+$('#bCopy').onclick = async () => {
+  const text = report(), box = $('#copyBox'); box.value = text;
+  let ok = false; try { await navigator.clipboard.writeText(text); ok = true; } catch (e) {}
+  if (!ok) { box.hidden = false; box.focus(); box.select(); try { ok = document.execCommand('copy'); } catch (e) {} }
+  toast(ok ? 'Copied. Paste it into the chat.' : 'Press and hold the text below, Select All, then Copy.');
+  if (!ok) box.hidden = false;
+};
+</script>
+</body>
+</html>
