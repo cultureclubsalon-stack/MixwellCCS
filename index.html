@@ -4,6 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Culture Club Color Bar</title>
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-title" content="CCS Mixwell">
+<meta name="theme-color" content="#bf816a">
 <style>
 body{margin:0;background:#354c41;color:#fbf1ea;font:16px/1.45 Helvetica,"Helvetica Neue",Arial,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center}
 h1{font:600 2rem/1.1 "Palo Santo",Georgia,"Times New Roman",serif;margin:0 0 10px}
@@ -47,10 +52,13 @@ var BRIDGE = '(' + function (link) {
 } + ')(' + JSON.stringify(APP_LINK) + ');';
 eval(BRIDGE);
 
+/* The app replaces this page when it opens, so the icon links go into the app's page too. */
+var ICONS = '<link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" type="image/png" href="favicon.png">' +
+  '<link rel="manifest" href="manifest.webmanifest"><meta name="apple-mobile-web-app-title" content="CCS Mixwell"><meta name="theme-color" content="#bf816a">';
 var CACHE = 'ccs-app-html';
 function show(html) {
   // Put the bridge first so it's ready before the app starts.
-  var tag = '<script>' + BRIDGE + '<\/script>';
+  var tag = ICONS + '<script>' + BRIDGE + '<\/script>';
   html = /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, function (m) { return m + tag; }) : tag + html;
   document.open(); document.write(html); document.close();
 }
