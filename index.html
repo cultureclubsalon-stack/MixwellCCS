@@ -1,1 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Culture Club Color Bar</title>
+<style>
+body{margin:0;background:#354c41;color:#fbf1ea;font:16px/1.45 Helvetica,"Helvetica Neue",Arial,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center}
+h1{font:600 2rem/1.1 "Palo Santo",Georgia,"Times New Roman",serif;margin:0 0 10px}
+p{opacity:.85;margin:0 0 18px}
+button{font:600 17px Helvetica,Arial,sans-serif;border:0;border-radius:12px;background:#fce4e5;color:#354c41;padding:12px 22px;min-height:50px;cursor:pointer}
+.box{padding:24px;max-width:420px}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>Culture Club Color Bar</h1>
+  <p id="status">Opening…</p>
+  <button id="retry" hidden>Try again</button>
+</div>
+<script>
+/* The salon's Color Bar sheet. This is the same link as the app's Google link. */
+var APP_LINK = 'https://script.google.com/macros/s/AKfycbzi6HS1QQA-RxctnlGezx3yWNGLgriV06mqdVIIR-77Wmczh6En9gJI9kgM8Gci_tVk/exec';
 
+/* The app's screens were written to talk to the sheet the Google way. This gives them the same way to talk to it from here. */
+var BRIDGE = '(' + function (link) {
+  function call(fn, args) {
+    return fetch(link, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ fn: fn, args: args }) })
+      .catch(function () { throw new Error('Could not reach the salon\'s sheet. Check the wifi and try again.'); })
+      .then(function (r) { if (!r.ok) throw new Error('The salon\'s sheet didn\'t answer (' + r.status + '). Try again in a moment.'); return r.json(); })
+      .then(function (j) { if (!j || !j.ok) throw new Error((j && j.error) || 'Something went wrong. Try again.'); return j.result; });
+  }
+  function runner(ok, fail) {
+    var base = {
+      withSuccessHandler: function (h) { return runner(h, fail); },
+      withFailureHandler: function (h) { return runner(ok, h); }
+    };
+    return new Proxy(base, { get: function (t, k) {
+      if (k in t) return t[k];
+      if (typeof k !== 'string') return undefined;
+      return function () { var args = Array.prototype.slice.call(arguments);
+        call(k, args).then(function (r) { if (ok) ok(r); }, function (e) { if (fail) fail(e); else console.error(e); }); };
+    } });
+  }
+  window.google = window.google || {};
+  window.google.script = { run: runner(null, null) };
+} + ')(' + JSON.stringify(APP_LINK) + ');';
+eval(BRIDGE);
+
+var CACHE = 'ccs-app-html';
+function show(html) {
+  // Put the bridge first so it's ready before the app starts.
+  var tag = '<script>' + BRIDGE + '<\/script>';
+  html = /<head[^>]*>/i.test(html) ? html.replace(/<head[^>]*>/i, function (m) { return m + tag; }) : tag + html;
+  document.open(); document.write(html); document.close();
+}
+function load() {
+  document.getElementById('status').textContent = 'Opening…';
+  document.getElementById('retry').hidden = true;
+  fetch(APP_LINK, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify({ page: 'app' }) })
+    .then(function (r) { return r.json(); })
+    .then(function (j) {
+      if (!j || !j.ok || !j.result) throw new Error((j && j.error) || 'No app');
+      try { localStorage.setItem(CACHE, j.result); } catch (e) {}
+      show(j.result);
+    })
+    .catch(function () {
+      var saved = null; try { saved = localStorage.getItem(CACHE); } catch (e) {}
+      if (saved) { show(saved); return; }
+      document.getElementById('status').textContent = 'Could not reach the salon\'s sheet. Check the wifi and try again.';
+      document.getElementById('retry').hidden = false;
+    });
+}
+document.getElementById('retry').onclick = load;
+load();
+</script>
+</body>
+</html>
